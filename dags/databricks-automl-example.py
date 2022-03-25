@@ -77,8 +77,7 @@ def databricks_automl_example():
             stage="Staging"
             )
 
-    # ingest >> feauture_engineering >> 
-    train >> register_model() 
+    ingest >> feauture_engineering >> train >> register_model() 
 
 
 
