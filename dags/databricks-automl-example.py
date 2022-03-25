@@ -20,7 +20,7 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 def databricks_automl_example():
 
     ingest_notebook = {
-        'notebook_path': '/Users/faisal@astronomer.io/BigQuery_to_Databricks',
+        'notebook_path': '/Users/<your username>/<BigQuery-to-Databricks-notebook>',
     }
 
     ingest = DatabricksSubmitRunOperator(
@@ -30,7 +30,7 @@ def databricks_automl_example():
         )
  
     feauture_engineering_notebook = {
-        'notebook_path': '/Users/faisal@astronomer.io/feauture-eng_census-pred',
+        'notebook_path': '/Users/<your username>/<feauture-eng-notebook>',
     }
 
     feauture_engineering = DatabricksSubmitRunOperator(
@@ -41,7 +41,7 @@ def databricks_automl_example():
 
 
     train_notebook = {
-        'notebook_path': '/Users/faisal@astronomer.io/databricks_automl/22-03-03-21:24-never_married_census_adult_income_features-2022_03_03-15_24-nb-10e0f57e/trials/22-03-03-21:24-DecisionTree-978c97aa0e15974358a9b1a0f4086e83'
+        'notebook_path': '/Users/<your username>/databricks_automl/<model-traning-notebook>'
     }
 
     train = DatabricksSubmitRunOperator(
