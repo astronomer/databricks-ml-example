@@ -18,7 +18,7 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
     catchup=False,
     doc_md=docs
 )
-def databricks_automl_example():
+def databricks_ml_example():
 
     ingest_notebook = {
         'notebook_path': '/Users/<your username>/<BigQuery-to-Databricks-notebook>',
@@ -82,4 +82,4 @@ def databricks_automl_example():
 
 
 
-dag = databricks_automl_example()
+dag = databricks_ml_example()
