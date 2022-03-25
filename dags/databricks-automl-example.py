@@ -19,25 +19,25 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 )
 def databricks_automl_example():
 
-    # ingest_notebook = {
-    #     'notebook_path': '/Users/faisal@astronomer.io/BigQuery_to_Databricks',
-    # }
+    ingest_notebook = {
+        'notebook_path': '/Users/faisal@astronomer.io/BigQuery_to_Databricks',
+    }
 
-    # ingest = DatabricksSubmitRunOperator(
-    #     task_id='ingest_notebook_task',
-    #     existing_cluster_id='0224-221140-suj0ngd4',
-    #     notebook_task=ingest_notebook
-    #     )
+    ingest = DatabricksSubmitRunOperator(
+        task_id='ingest_notebook_task',
+        existing_cluster_id='0224-221140-suj0ngd4',
+        notebook_task=ingest_notebook
+        )
  
-    # feauture_engineering_notebook = {
-    #     'notebook_path': '/Users/faisal@astronomer.io/feauture-eng_census-pred',
-    # }
+    feauture_engineering_notebook = {
+        'notebook_path': '/Users/faisal@astronomer.io/feauture-eng_census-pred',
+    }
 
-    # feauture_engineering = DatabricksSubmitRunOperator(
-    #     task_id='feature_engineering_notebook_task',
-    #     existing_cluster_id='0224-221140-suj0ngd4',
-    #     notebook_task=feauture_engineering_notebook
-    #     )
+    feauture_engineering = DatabricksSubmitRunOperator(
+        task_id='feature_engineering_notebook_task',
+        existing_cluster_id='0224-221140-suj0ngd4',
+        notebook_task=feauture_engineering_notebook
+        )
 
 
     train_notebook = {
