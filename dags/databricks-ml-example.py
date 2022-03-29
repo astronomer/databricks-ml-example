@@ -14,9 +14,9 @@ docs = """
 Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 """
 
-DATABRICKS_USER='faisal@astronomer.io'
+DATABRICKS_USER='<your databricks username>'
 DATABRICKS_NOTEBOOK_PATH=f'/Users/{DATABRICKS_USER}'
-DATABRICKS_CLUSTER_ID='0224-221140-suj0ngd4'
+DATABRICKS_CLUSTER_ID='your databricks cluster id'
 
 @dag(
     start_date=datetime(2022, 1, 1),
