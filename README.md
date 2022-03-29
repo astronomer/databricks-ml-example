@@ -21,7 +21,10 @@ These DAGs give basic examples on how to use Airflow to orchestarte your ML task
 
 ### Airflow
  - [Databricks connection](https://airflow.apache.org/docs/apache-airflow-providers-databricks/stable/connections/databricks.html)
+ - Airflow Variables
+    - databricks_user
+    - databricks_cluster_id 
  - MLflow environment variables in your .env
-     - MLFLOW_TRACKING_URI=databricks
-     - DATABRICKS_HOST=your_databricks_host
-     - DATABRICKS_TOKEN=your_PAT
+    - MLFLOW_TRACKING_URI=databricks
+    - DATABRICKS_HOST=your_databricks_host
+    - DATABRICKS_TOKEN=your_PAT

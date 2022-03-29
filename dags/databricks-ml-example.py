@@ -14,9 +14,7 @@ docs = """
 Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 """
 
-DATABRICKS_USER='<your databricks username>'
-DATABRICKS_NOTEBOOK_PATH=f'/Users/{DATABRICKS_USER}'
-DATABRICKS_CLUSTER_ID='your databricks cluster id'
+
 
 @dag(
     start_date=datetime(2022, 1, 1),
@@ -27,33 +25,32 @@ DATABRICKS_CLUSTER_ID='your databricks cluster id'
 def databricks_ml_example():
 
     ingest_notebook = {
-        'notebook_path': f'{DATABRICKS_NOTEBOOK_PATH}/BigQuery_to_Databricks',
+        'notebook_path': "/Users/{{ var.value.databricks_user }}/BigQuery_to_Databricks",
     }
 
     ingest = DatabricksSubmitRunOperator(
         task_id='ingest_notebook_task',
-        existing_cluster_id=DATABRICKS_CLUSTER_ID,
+        existing_cluster_id="{{ var.value.databricks_cluster_id }}",
         notebook_task=ingest_notebook
         )
  
     feature_engineering_notebook = {
-        'notebook_path': f'{DATABRICKS_NOTEBOOK_PATH}/feature-eng_census-pred',
+        'notebook_path': "/Users/{{ var.value.databricks_user }}/feature-eng_census-pred",
     }
 
     feauture_engineering = DatabricksSubmitRunOperator(
         task_id='feature_engineering_notebook_task',
-        existing_cluster_id=DATABRICKS_CLUSTER_ID,
+        existing_cluster_id="{{ var.value.databricks_cluster_id }}",
         notebook_task=feature_engineering_notebook
         )
 
-
     train_notebook = {
-        'notebook_path': f'{DATABRICKS_NOTEBOOK_PATH}/LightGBM-Census-Classifier'
+        'notebook_path': "/Users/{{ var.value.databricks_user }}/LightGBM-Census-Classifier"
     }
 
     train = DatabricksSubmitRunOperator(
         task_id='train_notebook_task',
-        existing_cluster_id=DATABRICKS_CLUSTER_ID,
+        existing_cluster_id="{{ var.value.databricks_cluster_id }}",
         notebook_task=train_notebook,
         do_xcom_push=True
         )
@@ -62,7 +59,6 @@ def databricks_ml_example():
     @task
     def register_model(databricks_run_id: str):
 
-        # databricks_run_id = ti.xcom_pull(task_ids='train_notebook_task', key='run_id')
         logging.info(f'Training notebook run_id: {databricks_run_id}')
 
         model_uri = get_notebook_output(databricks_run_id)
