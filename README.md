@@ -6,7 +6,12 @@ These DAGs give basic examples on how to use Airflow to orchestarte your ML task
     - **ingest:** Pulls data from BigQuery and does some basic cleaning and transformations then saves it to Delta Lake.
     - **feature engineering:**  Extract features for model and save output to the Feature Store.
     - **train:** Train model
-    - **register:** register model to mlflow
+    - **register:** Register model to mlflow
+
+2. **databricks-automl-example.py** - Runs an experimental pipeline from ingest to model training with Databricks AutoML with the following tasks:
+    - **ingest:** Pulls data from BigQuery and does some basic cleaning and transformations then saves it to Delta Lake.
+    - **feature engineering:**  Extract features for model and save output to the Feature Store.
+    - **train:** Train models with AutoML
 
 ## Requirements
 
@@ -17,7 +22,7 @@ These DAGs give basic examples on how to use Airflow to orchestarte your ML task
   - [Authentication token](https://docs.databricks.com/dev-tools/api/latest/authentication.html) (if you don't want to use a username and password to authenticate from Airflow)
   - Existing cluster [setup with GCP credentials](https://docs.databricks.com/data/data-sources/google/bigquery.html#create-a-google-service-account-for-databricks) (you can use an on demand cluster but you will need to supply it the GCP credentials accordingly)
   - Notebooks for each task.
-     - For `databricks-ml-example.py` you can use the notebooks in the `example_notebooks` folder which have been provided in this repo to get started.
+     - You can use the notebooks in the `example_notebooks` folder which have been provided in this repo to get started.
 
 ### Airflow
  - [Databricks connection](https://airflow.apache.org/docs/apache-airflow-providers-databricks/stable/connections/databricks.html)
