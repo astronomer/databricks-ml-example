@@ -1,11 +1,7 @@
 from datetime import datetime
-import logging
 
-from airflow.decorators import task, dag
-from airflow.providers.databricks.hooks.databricks import DatabricksHook
+from airflow.decorators import dag
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
-
-import mlflow
 
 docs = """
 Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
@@ -47,7 +43,6 @@ def databricks_automl_example():
             'features_database': 'census_data',
             'features_table': 'census_adult_income_features',
             'data_dir': 'dbfs:/automl/adult'
-
         }         
     }
 
