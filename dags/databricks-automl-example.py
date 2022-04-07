@@ -1,4 +1,4 @@
-from datetime import datetime
+from pendulum import datetime
 
 from airflow.decorators import dag
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
