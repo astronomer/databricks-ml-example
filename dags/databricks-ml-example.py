@@ -1,4 +1,4 @@
-from datetime import datetime
+from pendulum import datetime
 import logging
 
 from airflow.decorators import task, dag
@@ -20,34 +20,26 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 )
 def databricks_ml_example():
 
-    ingest_notebook = {
-        'notebook_path': "/Users/{{ var.value.databricks_user }}/BigQuery_to_Databricks",
-    }
-
     ingest = DatabricksSubmitRunOperator(
         task_id='ingest_notebook_task',
-        existing_cluster_id="{{ var.value.databricks_cluster_id }}",
-        notebook_task=ingest_notebook
+        notebook_task={
+            'notebook_path': "/Users/{{ var.value.databricks_user }}/BigQuery_to_Databricks"
+        }
     )
- 
-    feature_engineering_notebook = {
-        'notebook_path': "/Users/{{ var.value.databricks_user }}/feature-eng_census-pred",
-    }
 
     feauture_engineering = DatabricksSubmitRunOperator(
         task_id='feature_engineering_notebook_task',
-        existing_cluster_id="{{ var.value.databricks_cluster_id }}",
-        notebook_task=feature_engineering_notebook
+        notebook_task={
+            'notebook_path': "/Users/{{ var.value.databricks_user }}/feature-eng_census-pred",
+        }
     )
-
-    train_notebook = {
-        'notebook_path': "/Users/{{ var.value.databricks_user }}/LightGBM-Census-Classifier"
-    }
 
     train = DatabricksSubmitRunOperator(
         task_id='train_notebook_task',
         existing_cluster_id="{{ var.value.databricks_cluster_id }}",
-        notebook_task=train_notebook,
+        notebook_task={
+            'notebook_path': "/Users/{{ var.value.databricks_user }}/LightGBM-Census-Classifier"
+        },
         do_xcom_push=True
     )
 
