@@ -19,6 +19,8 @@ These DAGs give basic examples on how to use Airflow to orchestarte your ML task
     - **submit transition request** - Submit an approval request in MLflow to transition the model to Stage
     - **notify** - Send a Slack notification with relevant details about the model
 
+    Note: For this DAG we used the Databricks REST API in many places for requests to MLFlow due to there not being a Python API available for those endpionts yet.
+
 ## Requirements
 
 ### Bigquery
