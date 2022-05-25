@@ -20,6 +20,9 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 )
 def databricks_ml_example():
 
+
+    # Executes Databricks Notebook that performs data ingestion from BigQuery.
+    # Connection to Bigquery is predifined in the Cluster settings the notebook is attached to.
     ingest = DatabricksSubmitRunOperator(
         task_id='ingest_notebook_task',
         notebook_task={
@@ -27,6 +30,7 @@ def databricks_ml_example():
         }
     )
 
+    # Executes Databricks notebook that performs feature engineering and stores model in the Databricks Feature Store.
     feauture_engineering = DatabricksSubmitRunOperator(
         task_id='feature_engineering_notebook_task',
         notebook_task={
@@ -34,6 +38,8 @@ def databricks_ml_example():
         }
     )
 
+    # Executes Databricks notebook that does model training by pulling in data from the Feature Store tracking with
+    # MLFlow.
     train = DatabricksSubmitRunOperator(
         task_id='train_notebook_task',
         existing_cluster_id="{{ var.value.databricks_cluster_id }}",
@@ -46,6 +52,14 @@ def databricks_ml_example():
     
     @task
     def register_model(databricks_run_id: str):
+        """Register model in MLflow
+
+        Uses the run_id to get the notebook output which contains the model URI needed to register the model.
+        After registration model is transitioned to Staging.
+
+        Keyword arguments:
+        databricks_run_id -- run_id of the training notebook used in the "train" task.
+        """
 
         logging.info(f'Training notebook run_id: {databricks_run_id}')
 

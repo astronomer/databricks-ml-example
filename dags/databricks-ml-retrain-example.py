@@ -26,6 +26,9 @@ model_name = 'census_pred'
 )
 def databricks_ml_retrain_example():
 
+
+    # Executes Databricks notebook that does model training by pulling in data from the Feature Store tracking with
+    # MLFlow.
     retrain = DatabricksSubmitRunOperator(
         task_id='retrain_notebook_task',
         existing_cluster_id="{{ var.value.databricks_cluster_id }}",
@@ -38,7 +41,16 @@ def databricks_ml_retrain_example():
     
     @task()
     def register_model(databricks_run_id: str):
-    
+        """Register model in MLflow
+
+        Uses the run_id to get the notebook output which contains the model URI needed to register the model.
+
+        Returns the new model version
+
+        Keyword arguments:
+        databricks_run_id -- run_id of the training notebook used in the "train" task.
+        """
+
         logging.info(f'Training notebook run_id: {databricks_run_id}')
 
         databricks_hook = DatabricksHook()
@@ -55,7 +67,16 @@ def databricks_ml_retrain_example():
 
     @task()
     def submit_for_approval_to_stage(model_version, databricks_instance):
+        """Submit transistion to Staging request
 
+        After registration a transition to Staging request is submitted which can be reviewed by users.
+
+        Returns response from MLflow API for the request.
+
+        Keyword arguments:
+        model_version -- Version of the model that should be submitted with transition request.
+        databricks_instance -- The Databricks instance id
+        """
         response = requests.post(
             url=f'https://{databricks_instance}.cloud.databricks.com/api/2.0/mlflow/transition-requests/create',
             headers={'Authorization': 'Bearer %s' % os.environ['DATABRICKS_TOKEN']},
@@ -75,6 +96,15 @@ def databricks_ml_retrain_example():
 
     @task()
     def notify(model_version, transistion_request, databricks_instance):
+        """Send notification
+
+        Send a Slack notification with new model's metrics and that it's ready for approval to transition to Staging.
+
+        Keyword Arguments:
+        model_version -- Verstion of model that notification is for.
+        transition_request -- URL for transition request
+        databricks_instance -- The Databricks instance id
+        """
 
         response = requests.get(
             url=f'https://{databricks_instance}.cloud.databricks.com/api/2.0/mlflow/databricks/registered-models/get',

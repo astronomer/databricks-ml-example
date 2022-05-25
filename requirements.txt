@@ -1,3 +1,5 @@
 apache-airflow-providers-databricks==2.4.0
-mlflow==1.24.0
+mlflow==1.26.0
 apache-airflow-providers-slack==4.2.3
+boto3==1.23.1
+apache-airflow-providers-amazon==3.4.0

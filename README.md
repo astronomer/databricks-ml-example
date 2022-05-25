@@ -1,6 +1,7 @@
-## Databricks Data Science and Machine Learning Example with Airflow
+# Databricks Data Science and Machine Learning Examples with Airflow
 
-These DAGs give basic examples on how to use Airflow to orchestarte your ML tasks in Databricks. The Databricks code is in a Databricks notebook for which you can find descriptions of below.
+## DAGs
+These DAGs give basic examples on how to use Airflow to orchestrate your ML tasks in Databricks. The Databricks code is in a Databricks notebook for which you can find descriptions of below.
 
 1. **databricks-ml-example.py** - Runs an end to end data ingest to model publishing pipeline with the following tasks:
     - **ingest:** Pulls data from BigQuery and does some basic cleaning and transformations then saves it to Delta Lake.
@@ -13,13 +14,23 @@ These DAGs give basic examples on how to use Airflow to orchestarte your ML task
     - **feature engineering:**  Extract features for model and save output to the Feature Store.
     - **train:** Train models using AutoML with a notebook
 
-3. **databricks-ml-retrain-exmaple.py** - Runs a pipeine that retrains, registers, and submits a transition to Stage request for a model, then submits a Slack notification with the following tasks: 
-    - **retrain** - Retrain model with a notebook
-    - **register** - Register in MLflow
-    - **submit transition request** - Submit an approval request in MLflow to transition the model to Stage
-    - **notify** - Send a Slack notification with relevant details about the model
+3. **databricks-ml-retrain-example.py** - Runs a pipeline that retrains, registers, and submits a transition to Stage request for a model, then submits a Slack notification with the following tasks: 
+    - **retrain:** Retrain model with a notebook
+    - **register:** Register in MLflow
+    - **submit transition request:** Submit an approval request in MLflow to transition the model to Stage
+    - **notify:** Send a Slack notification with relevant details about the model
 
     Note: For this DAG we used the Databricks REST API in many places for requests to MLFlow due to there not being a Python API available for those endpionts yet.
+
+4. **databricks-model-serve-sagemaker-example.py** - Deploys MLflow model to Sagemaker
+   - **check model info for Staging:** Checks if there is a model marked for Staging and gets it information.
+   - **new model version confirmation:** Shortcircuit Operator that determines if the model has been deployed already and whether to proceed ot not.
+   - **deploy model:** Use mlflow.sagemaker API to deploy model and endpoint in AWS Sagemaker
+   - **test model endpoint:** Use Sagemaker API to send a request with sample data to get predictions
+   - **mark as deployed:** Tag model version in MLflow Registry as deployed
+   
+   Note: For this DAG we place AWS credentials as environment variables and not as an Airflow connections. This is to
+   simply avoid putting them in two places, since the API calls to Sagemaker or MLflow that don't use an Airflow operator cannot access those credentials from connections.
 
 ## Requirements
 
@@ -42,3 +53,7 @@ These DAGs give basic examples on how to use Airflow to orchestarte your ML task
     - MLFLOW_TRACKING_URI=databricks
     - DATABRICKS_HOST=your_databricks_host
     - DATABRICKS_TOKEN=your_PAT
+ - AWS environment variables in your .env
+   - AWS_ACCESS_KEY_ID
+   - AWS_SECRET_ACCESS_KEY
+   - AWS_SESSION_TOKEN

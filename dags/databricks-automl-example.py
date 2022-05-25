@@ -19,6 +19,8 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 )
 def databricks_automl_example():
 
+    # Executes Databricks Notebook that performs data ingestion from BigQuery.
+    # Connection to Bigquery is predifined in the Cluster settings the notebook is attached to.
     ingest = DatabricksSubmitRunOperator(
         task_id='ingest_notebook_task',
         notebook_task={
@@ -26,6 +28,7 @@ def databricks_automl_example():
         }
     )
 
+    # Executes Databricks notebook that performs feature engineering and stores model in the Databricks Feature Store.
     feauture_engineering = DatabricksSubmitRunOperator(
         task_id='feature_engineering_notebook_task',
         notebook_task={
@@ -33,6 +36,8 @@ def databricks_automl_example():
         }
     )
 
+    # Executes Databricks notebook that uses AutoML to train a model by pulling in data from the Feature Store and
+    # tracking with MLFlow.
     train_automl = DatabricksSubmitRunOperator(
         task_id='train_notebook_task',
         notebook_task={
