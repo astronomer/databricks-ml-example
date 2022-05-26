@@ -20,7 +20,6 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 )
 def databricks_ml_example():
 
-
     # Executes Databricks Notebook that performs data ingestion from BigQuery.
     # Connection to Bigquery is predifined in the Cluster settings the notebook is attached to.
     ingest = DatabricksSubmitRunOperator(
@@ -49,7 +48,6 @@ def databricks_ml_example():
         do_xcom_push=True
     )
 
-    
     @task
     def register_model(databricks_run_id: str):
         """Register model in MLflow
@@ -63,15 +61,18 @@ def databricks_ml_example():
 
         logging.info(f'Training notebook run_id: {databricks_run_id}')
 
+        # Get model URI from notebook output
         databricks_hook = DatabricksHook()
         model_uri = databricks_hook.get_run_output(databricks_run_id)['notebook_output']['result']
         logging.info(f'Model URI: {model_uri}')
-        
+
+        # Register new model version
         model_version = mlflow.register_model(model_uri, 'census_pred')
 
         logging.info(f'Name: {model_version.name}')
         logging.info(f'Version: {model_version.version}')
 
+        # Submit transition to Staging request to MLflow
         client = mlflow.tracking.MlflowClient()
 
         client.transition_model_version_stage(
@@ -79,7 +80,6 @@ def databricks_ml_example():
             version=model_version.version,
             stage="Staging"
         )
-
 
     ingest >> feauture_engineering >> train
     register_model(train.output['run_id'])
