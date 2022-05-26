@@ -21,7 +21,7 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 def databricks_ml_example():
 
     # Executes Databricks Notebook that performs data ingestion from BigQuery.
-    # Connection to Bigquery is predifined in the Cluster settings the notebook is attached to.
+    # Connection to Bigquery is predefined in the Cluster settings the notebook is attached to.
     ingest = DatabricksSubmitRunOperator(
         task_id='ingest_notebook_task',
         notebook_task={
@@ -30,7 +30,7 @@ def databricks_ml_example():
     )
 
     # Executes Databricks notebook that performs feature engineering and stores model in the Databricks Feature Store.
-    feauture_engineering = DatabricksSubmitRunOperator(
+    feature_engineering = DatabricksSubmitRunOperator(
         task_id='feature_engineering_notebook_task',
         notebook_task={
             'notebook_path': "/Users/{{ var.value.databricks_user }}/feature-eng_census-pred",
@@ -81,7 +81,7 @@ def databricks_ml_example():
             stage="Staging"
         )
 
-    ingest >> feauture_engineering >> train
+    ingest >> feature_engineering >> train
     register_model(train.output['run_id'])
 
 

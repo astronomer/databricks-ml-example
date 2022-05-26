@@ -84,7 +84,7 @@ def databricks_model_serve_sagemaker_example():
     def deploy_model(image_url: str, sagemaker_execution_arn: str):
         """Deploy new model to AWS Sagemaker
 
-        Uses mlflow-pyfunc image and Sagemaker Execution Role to deploy new model and endpiont.
+        Uses mlflow-pyfunc image and Sagemaker Execution Role to deploy new model and endpoint.
         """
 
         sagemaker = SageMakerDeploymentClient(target_uri)

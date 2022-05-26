@@ -20,7 +20,7 @@ These DAGs give basic examples on how to use Airflow to orchestrate your ML task
     - **submit transition request:** Submit an approval request in MLflow to transition the model to Stage
     - **notify:** Send a Slack notification with relevant details about the model
 
-    Note: For this DAG we used the Databricks REST API in many places for requests to MLFlow due to there not being a Python API available for those endpionts yet.
+    Note: For this DAG we used the Databricks REST API in many places for requests to MLFlow due to there not being a Python API available for those endpoints yet.
 
 4. **databricks-model-serve-sagemaker-example.py** - Deploys MLflow model to Sagemaker
    - **check model info for Staging:** Checks if there is a model marked for Staging and gets it information.
@@ -35,11 +35,11 @@ These DAGs give basic examples on how to use Airflow to orchestrate your ML task
 ## Requirements
 
 ### Bigquery
- - [Service account with correct permsissions](https://docs.databricks.com/data/data-sources/google/bigquery.html#step-1-set-up-google-cloud) to use with Databricks cluster
+ - [Service account with correct permissions](https://docs.databricks.com/data/data-sources/google/bigquery.html#step-1-set-up-google-cloud) to use with Databricks cluster
 
 ### Databricks
   - [Authentication token](https://docs.databricks.com/dev-tools/api/latest/authentication.html) (if you don't want to use a username and password to authenticate from Airflow)
-  - Existing cluster [setup with GCP credentials](https://docs.databricks.com/data/data-sources/google/bigquery.html#create-a-google-service-account-for-databricks) (you can use an on demand cluster but you will need to supply it the GCP credentials accordingly)
+  - Existing cluster [setup with GCP credentials](https://docs.databricks.com/data/data-sources/google/bigquery.html#create-a-google-service-account-for-databricks) (you can use an on demand cluster, but you will need to supply it the GCP credentials accordingly)
   - Notebooks for each task.
      - You can use the notebooks in the `example_notebooks` folder which have been provided in this repo to get started.
 
@@ -49,6 +49,8 @@ These DAGs give basic examples on how to use Airflow to orchestrate your ML task
     - databricks_user
     - databricks_cluster_id 
     - databricks_instance
+    - mlflow_pyfunc_image_url - The location of your mlflow-pyfunc image (See [documentation](https://mlflow.org/docs/latest/models.html#deploy-a-python-function-model-on-amazon-sagemaker) for more info)
+    - sagemaker_execution_arn - Execution arn for Sagemaker so that it can deploy the model end endpoint
  - MLflow environment variables in your .env
     - MLFLOW_TRACKING_URI=databricks
     - DATABRICKS_HOST=your_databricks_host
