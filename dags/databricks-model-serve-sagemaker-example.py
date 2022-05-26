@@ -14,7 +14,7 @@ import pandas as pd
 from include.sample_data import test_sample
 
 docs = """
-Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
+Demonstrates orchestrating ML model serving pipelines executed on Databricks with Airflow
 """
 
 model_name = 'census_pred'

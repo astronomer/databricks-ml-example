@@ -13,7 +13,7 @@ from airflow.providers.slack.hooks.slack import SlackHook
 import mlflow
 
 docs = """
-Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
+Demonstrates orchestrating ML retrain pipelines executed on Databricks with Airflow
 """
 
 model_name = 'census_pred'
