@@ -1,15 +1,14 @@
 import json
-from pendulum import datetime
 import logging
-import requests
 import os
 
+import mlflow
+import requests
 from airflow.decorators import task, dag
 from airflow.providers.databricks.hooks.databricks import DatabricksHook
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
 from airflow.providers.slack.hooks.slack import SlackHook
-
-import mlflow
+from pendulum import datetime
 
 docs = """
 Demonstrates orchestrating ML retrain pipelines executed on Databricks with Airflow.

@@ -1,15 +1,13 @@
-import boto3
-from pendulum import datetime
 import logging
 from pprint import pformat
 
+import boto3
+import pandas as pd
 from airflow.decorators import task, dag
 from airflow.operators.python import ShortCircuitOperator
-
-from mlflow.tracking import MlflowClient
 from mlflow.sagemaker import SageMakerDeploymentClient
-
-import pandas as pd
+from mlflow.tracking import MlflowClient
+from pendulum import datetime
 
 from include.sample_data import test_sample
 

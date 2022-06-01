@@ -1,11 +1,10 @@
-from pendulum import datetime
 import logging
 
+import mlflow
 from airflow.decorators import task, dag
 from airflow.providers.databricks.hooks.databricks import DatabricksHook
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
-
-import mlflow
+from pendulum import datetime
 
 docs = """
 Demonstrates orchestrating ML pipelines executed on Databricks with Airflow

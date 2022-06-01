@@ -1,7 +1,6 @@
-from pendulum import datetime
-
 from airflow.decorators import dag
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
+from pendulum import datetime
 
 docs = """
 Demonstrates orchestrating ML pipelines executed on Databricks with Airflow using Databricks' AutoML.
