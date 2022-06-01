@@ -44,12 +44,12 @@ def databricks_model_serve_sagemaker_example():
         Collect info if there is a new model version that has been transitioned to Staging and determine its deployment
         status.
 
-        Returns JSON with deployed status, version number, and model description
+        Returns JSON with deployed status, version number, and model description.
         """
         client = MlflowClient()
 
         # Iterate through all model versions and get only the one market for Staging.
-        # Then gather info on its version number, and deployment tag info, and description.
+        # Then gather info on its version number, deployment tag info, and description.
         for mv in client.search_model_versions(f"name='{model_name}'"):
             model_version = dict(mv)
             if model_version['current_stage'] == 'Staging':
@@ -67,12 +67,12 @@ def databricks_model_serve_sagemaker_example():
 
                 return {'deployed': deployed, 'version': version_number, 'description': description}
 
-        # If no model is marked for Staging, then return "Not Available"
+        # If no model is marked for Staging, then return "Not Available".
         return {'deployed': 'Not Available', 'version': None, 'description': None}
 
     model_status_result = check_model_version_status()
 
-    # Based on the output of the check_model_version_status() task determine if a new model needs to deployed and
+    # Based on the output of the check_model_version_status() task determine if a new model needs to be deployed then
     # proceed accordingly.
     new_version_confirmation = ShortCircuitOperator(
         task_id="new_version_confirmation",
@@ -127,7 +127,7 @@ def databricks_model_serve_sagemaker_example():
         deployed as part of his pipeline.
 
         Keyword Arguments:
-        model_version -- model version that was deployed as part of this pipeline.
+        model_version -- model version that was deployed as part of this pipeline
         """
 
         client = MlflowClient()
@@ -139,8 +139,10 @@ def databricks_model_serve_sagemaker_example():
             value="True"
         )
 
-    new_version_confirmation >> deploy_model(image_url="{{ var.value.mlflow_pyfunc_image_url }}", sagemaker_execution_arn="{{ var.value.sagemaker_execution_arn }}") >> test_model_endpoint() >> mark_as_deployed(
-        model_status_result['version'])
+    new_version_confirmation >> deploy_model(
+        image_url="{{ var.value.mlflow_pyfunc_image_url }}",
+        sagemaker_execution_arn="{{ var.value.sagemaker_execution_arn }}"
+    ) >> test_model_endpoint() >> mark_as_deployed(model_status_result['version'])
 
 
 dag = databricks_model_serve_sagemaker_example()

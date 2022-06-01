@@ -4,7 +4,7 @@ from airflow.decorators import dag
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
 
 docs = """
-Demonstrates orchestrating ML pipelines executed on Databricks with Airflow using Databricks' AutoML
+Demonstrates orchestrating ML pipelines executed on Databricks with Airflow using Databricks' AutoML.
 """
 
 

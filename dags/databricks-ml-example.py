@@ -53,10 +53,10 @@ def databricks_ml_example():
         """Register model in MLflow
 
         Uses the run_id to get the notebook output which contains the model URI needed to register the model.
-        After registration model is transitioned to Staging.
+        After registration the model is transitioned to Staging.
 
         Keyword arguments:
-        databricks_run_id -- run_id of the training notebook used in the "train" task.
+        databricks_run_id -- run_id of the training notebook used in the "train" task
         """
 
         logging.info(f'Training notebook run_id: {databricks_run_id}')
