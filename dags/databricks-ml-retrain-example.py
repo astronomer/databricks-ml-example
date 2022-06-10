@@ -2,7 +2,6 @@ import json
 import logging
 import os
 
-import mlflow
 import requests
 from airflow.decorators import task, dag
 from airflow.providers.databricks.hooks.databricks import DatabricksHook
@@ -51,6 +50,7 @@ def databricks_ml_retrain_example():
         Keyword arguments:
         databricks_run_id -- run_id of the training notebook used in the "train" task
         """
+        import mlflow
 
         logging.info(f'Training notebook run_id: {databricks_run_id}')
 
@@ -65,7 +65,7 @@ def databricks_ml_retrain_example():
         return registered_model.version
 
     @task()
-    def submit_for_approval_to_stage(model_version, databricks_instance: str):
+    def submit_for_approval_to_stage(model_version: str, databricks_instance: str):
         """Submit transition to Staging request
 
         After registration a transition to Staging request is submitted which can be reviewed by users.

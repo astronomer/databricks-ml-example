@@ -19,7 +19,7 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow usin
 def databricks_automl_example():
 
     # Executes Databricks Notebook that performs data ingestion from BigQuery.
-    # Connection to Bigquery is predefined in the Cluster settings the notebook is attached to.
+    # Connection to BigQuery is predefined in the Cluster settings the notebook is attached to.
     ingest = DatabricksSubmitRunOperator(
         task_id='ingest_notebook_task',
         notebook_task={

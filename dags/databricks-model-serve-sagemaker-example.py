@@ -1,8 +1,6 @@
 import logging
 from pprint import pformat
 
-import boto3
-import pandas as pd
 from airflow.decorators import task, dag
 from airflow.operators.python import ShortCircuitOperator
 from mlflow.sagemaker import SageMakerDeploymentClient
@@ -15,7 +13,7 @@ docs = """
 Demonstrates orchestrating ML model serving pipelines executed on Databricks with Airflow.
 
 Checks if there is a model marked for `Staging` that does not have a `deployed: True` tag in the registry. If that
-condition is met, it proceeds to deploy the new model version to Sagemaker and create an end point. Once the end point
+condition is met, it proceeds to deploy the new model version to Sagemaker and create an endpoint. Once the end point
 is created a test on the endpoint with sample data is performed and if it gets a successful response then the model
 in the registry is tagged as `deployed: True`.
 """
@@ -91,8 +89,8 @@ def databricks_model_serve_sagemaker_example():
             name=deployment_name,
             model_uri=model_uri,
             config=dict(
-                image_url=f'{image_url}',
-                execution_role_arn=f'{sagemaker_execution_arn}'
+                image_url=image_url,
+                execution_role_arn=sagemaker_execution_arn
             )
         )
 
@@ -102,6 +100,8 @@ def databricks_model_serve_sagemaker_example():
 
         Uses Sagemaker Runtime API to send a request with sample data to get a prediction.
         """
+        import boto3
+        import pandas as pd
 
         # Read in JSON string of sample data to test with.
         df = pd.read_json(test_sample, orient='split')
@@ -137,10 +137,13 @@ def databricks_model_serve_sagemaker_example():
             value="True"
         )
 
-    new_version_confirmation >> deploy_model(
+    _deploy_model = deploy_model(
         image_url="{{ var.value.mlflow_pyfunc_image_url }}",
         sagemaker_execution_arn="{{ var.value.sagemaker_execution_arn }}"
-    ) >> test_model_endpoint() >> mark_as_deployed(model_status_result['version'])
+    )
+    _mark_as_deployed = mark_as_deployed(model_status_result['version'])
+
+    new_version_confirmation >> _deploy_model >> test_model_endpoint() >> _mark_as_deployed
 
 
 dag = databricks_model_serve_sagemaker_example()

@@ -1,6 +1,5 @@
 import logging
 
-import mlflow
 from airflow.decorators import task, dag
 from airflow.providers.databricks.hooks.databricks import DatabricksHook
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
@@ -57,6 +56,7 @@ def databricks_ml_example():
         Keyword arguments:
         databricks_run_id -- run_id of the training notebook used in the "train" task
         """
+        import mlflow
 
         logging.info(f'Training notebook run_id: {databricks_run_id}')
 
