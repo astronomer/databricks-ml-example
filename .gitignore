@@ -7,3 +7,4 @@ airflow_settings.yaml
 Pip*
 *DS_Store
 databricks-env/*
+.idea/

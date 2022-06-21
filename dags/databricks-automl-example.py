@@ -1,10 +1,9 @@
-from pendulum import datetime
-
 from airflow.decorators import dag
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
+from pendulum import datetime
 
 docs = """
-Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
+Demonstrates orchestrating ML pipelines executed on Databricks with Airflow using Databricks' AutoML.
 """
 
 
@@ -19,6 +18,8 @@ Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
 )
 def databricks_automl_example():
 
+    # Executes Databricks Notebook that performs data ingestion from BigQuery.
+    # Connection to BigQuery is predefined in the Cluster settings the notebook is attached to.
     ingest = DatabricksSubmitRunOperator(
         task_id='ingest_notebook_task',
         notebook_task={
@@ -26,13 +27,16 @@ def databricks_automl_example():
         }
     )
 
-    feauture_engineering = DatabricksSubmitRunOperator(
+    # Executes Databricks notebook that performs feature engineering and stores model in the Databricks Feature Store.
+    feature_engineering = DatabricksSubmitRunOperator(
         task_id='feature_engineering_notebook_task',
         notebook_task={
             'notebook_path': "/Users/{{ var.value.databricks_user }}/feature-eng_census-pred",
         }
     )
 
+    # Executes Databricks notebook that uses AutoML to train a model by pulling in data from the Feature Store and
+    # tracking with MLFlow.
     train_automl = DatabricksSubmitRunOperator(
         task_id='train_notebook_task',
         notebook_task={
@@ -47,7 +51,7 @@ def databricks_automl_example():
         do_xcom_push=True
     )
 
-    ingest >> feauture_engineering >> train_automl
+    ingest >> feature_engineering >> train_automl
 
 
 dag = databricks_automl_example()
