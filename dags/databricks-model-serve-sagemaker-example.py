@@ -1,3 +1,12 @@
+"""
+Demonstrates orchestrating ML model serving pipelines executed on Databricks with Airflow.
+
+Checks if there is a model marked for `Staging` that does not have a `deployed: True` tag in the registry. If that
+condition is met, it proceeds to deploy the new model version to Sagemaker and create an endpoint. Once the end point
+is created a test on the endpoint with sample data is performed and if it gets a successful response then the model
+in the registry is tagged as `deployed: True`.
+"""
+
 import logging
 from pprint import pformat
 
@@ -9,14 +18,6 @@ from pendulum import datetime
 
 from include.sample_data import test_sample
 
-docs = """
-Demonstrates orchestrating ML model serving pipelines executed on Databricks with Airflow.
-
-Checks if there is a model marked for `Staging` that does not have a `deployed: True` tag in the registry. If that
-condition is met, it proceeds to deploy the new model version to Sagemaker and create an endpoint. Once the end point
-is created a test on the endpoint with sample data is performed and if it gets a successful response then the model
-in the registry is tagged as `deployed: True`.
-"""
 
 model_name = 'census_pred'
 region = 'us-east-2'
@@ -29,7 +30,7 @@ target_uri = f'sagemaker:/{region}'
     start_date=datetime(2022, 1, 1),
     schedule_interval=None,
     catchup=False,
-    doc_md=docs
+    doc_md=__doc__
 )
 def databricks_model_serve_sagemaker_example():
 

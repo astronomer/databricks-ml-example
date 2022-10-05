@@ -1,3 +1,7 @@
+"""
+Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
+"""
+
 import logging
 
 from airflow.decorators import task, dag
@@ -5,16 +9,12 @@ from airflow.providers.databricks.hooks.databricks import DatabricksHook
 from airflow.providers.databricks.operators.databricks import DatabricksSubmitRunOperator
 from pendulum import datetime
 
-docs = """
-Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
-"""
-
 
 @dag(
     start_date=datetime(2022, 1, 1),
     schedule_interval=None,
     catchup=False,
-    doc_md=docs
+    doc_md=__doc__
 )
 def databricks_ml_example():
 

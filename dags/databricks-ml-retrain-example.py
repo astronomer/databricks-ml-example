@@ -1,3 +1,11 @@
+"""
+Demonstrates orchestrating ML retrain pipelines executed on Databricks with Airflow.
+
+Triggers the execution of a designated retrain notebook, then registers the new model and submits a "transition to
+Staging" approval request. Lastly, it sends a Slack notification to a designated channel informing stakeholders on the
+model's validation scores, link to the approval request, and other relevant information.
+"""
+
 import json
 import logging
 import os
@@ -9,13 +17,6 @@ from airflow.providers.databricks.operators.databricks import DatabricksSubmitRu
 from airflow.providers.slack.hooks.slack import SlackHook
 from pendulum import datetime
 
-docs = """
-Demonstrates orchestrating ML retrain pipelines executed on Databricks with Airflow.
-
-Triggers the execution of a designated retrain notebook, then registers the new model and submits a "transition to 
-Staging" approval request. Lastly, it sends a Slack notification to a designated channel informing stakeholders on the 
-model's validation scores, link to the approval request, and other relevant information.
-"""
 
 model_name = 'census_pred'
 
@@ -24,7 +25,7 @@ model_name = 'census_pred'
     start_date=datetime(2022, 1, 1),
     schedule_interval=None,
     catchup=False,
-    doc_md=docs
+    doc_md=__doc__
 )
 def databricks_ml_retrain_example():
 
