@@ -1,0 +1,10 @@
+# These categories will be applied to all DAGs in the repo.
+categories:
+  - AI + Machine Learning
+  - Compute 
+# List of DAGs that should be published to the Astronomer Registry.
+dags:
+  - path: dags/databricks-automl-example.py
+  - path: dags/databricks-ml-example.py
+  - path: dags/databricks-ml-retrain-example.py
+  - path: dags/databricks-model-serve-sagemaker-example.py
