@@ -1,4 +1,6 @@
 """
+### Retraining a model on Databricks.
+
 Demonstrates orchestrating ML retrain pipelines executed on Databricks with Airflow.
 
 Triggers the execution of a designated retrain notebook, then registers the new model and submits a "transition to

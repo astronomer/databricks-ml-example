@@ -1,5 +1,9 @@
 """
+### Databricks AutoML DAG
+
 Demonstrates orchestrating ML pipelines executed on Databricks with Airflow using Databricks' AutoML.
+
+Pulls in data from Bigquery and uses the DatabricksSubmitRunOperator to call a notebook that uses AutoML.
 """
 
 from airflow.decorators import dag

@@ -1,5 +1,9 @@
 """
+### Databricks ML Pipeline
+
 Demonstrates orchestrating ML pipelines executed on Databricks with Airflow
+
+Pull sin data from BigQuery and performs machine learning on Databricks.
 """
 
 import logging
